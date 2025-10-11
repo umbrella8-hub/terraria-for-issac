@@ -3,8 +3,8 @@
     name="Panic Necklace"
     cache="damage"
     description="A item for test"
-    gfx="test_item.png"
-    quality="3"
+    gfx="p_panic_necklace.png"
+    quality="1"
     tags="offensive"
   />
 </items>
