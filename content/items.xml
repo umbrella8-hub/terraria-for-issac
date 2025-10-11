@@ -1,0 +1,10 @@
+<items gfxroot="gfx/items/" version="1">
+  <passive
+    name="Test Item"
+    cache="damage"
+    description="A item for test"
+    gfx="test_item.png"
+    quality="3"
+    tags="offensive"
+  />
+</items>
