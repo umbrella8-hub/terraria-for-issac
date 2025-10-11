@@ -1,6 +1,6 @@
 <items gfxroot="gfx/items/" version="1">
   <passive
-    name="Test Item"
+    name="Panic Necklace"
     cache="damage"
     description="A item for test"
     gfx="test_item.png"
