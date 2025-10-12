@@ -1,10 +1,20 @@
 local TFI = RegisterMod("Terraria for Issac", 1)
 local game = Game()
+-- 恐惧项链持续时间
+local pn_duration = 300
+-- 混乱之脑概率
+local br_chance = 0.2
+-- 混乱之脑cd
+local br_cd = 300
+-- 混乱之脑无敌时间
+local br_damageCooldown = 60
+-- 混乱之脑持续时间
+local br_duration = 120
 ------------------------------------------------------------------------------------------------------------------------------------------------------
 -- 从xml中获取道具数据
 local ItemID = {
-    pNeck = Isaac.GetItemIdByName("Panic Necklace"),
-    brain = Isaac.GetItemIdByName("Brain of Confusion")
+    pn_item = Isaac.GetItemIdByName("Panic Necklace"),
+    br_item = Isaac.GetItemIdByName("Brain of Confusion")
 };
 ------------------------------------------------------------------------------------------------------------------------------------------------------
 -- EID
@@ -13,11 +23,11 @@ local function EIDAddItem(id, content) -- EID添加内容
     if id then ItemEID[id] = content; end
 end
 
-EIDAddItem(ItemID.pNeck, {
+EIDAddItem(ItemID.pn_item, {
     Name = "恐惧项链",
     Descriptions = "受击后五秒内↑{{Speed}}+0.5移速"
 });
-EIDAddItem(ItemID.brain, {
+EIDAddItem(ItemID.br_item, {
     Name = "混乱之脑",
     Descriptions = "懒得写介绍"
 });
@@ -60,9 +70,9 @@ end
 -- 道具函数
 function TFI:OnEssentialBalmAdd(player, cacheflag)
     -- 玩家拥有当前道具的数量
-    local itemCount = player:GetCollectibleNum(ItemID.pNeck)
+    local itemCount = player:GetCollectibleNum(ItemID.pn_item)
     -- 如果玩家持有了该道具
-    --[[if player:HasCollectible(ItemID.pNeck) then
+    --[[if player:HasCollectible(ItemID.pn_item) then
         -- 判断以撒中角色数值的道具堆栈标签
         if cacheflag == CacheFlag.CACHE_DAMAGE then        -- 攻击力堆栈
             player.Damage = player.Damage + 1 * itemCount;
@@ -75,25 +85,33 @@ function TFI:OnEssentialBalmAdd(player, cacheflag)
 end
 
 -- 受击函数
-function TFI:OnEntityGetDamage(player, damount, dflag, dsource, dcountdown)
+function TFI:OnEntityTakeDamage(player, damount, dflag, dsource, dcountdown)
     local numPlayers = game:GetNumPlayers()
     for i = 0, numPlayers do
         local player = Isaac.GetPlayer(i)
         local data = player:GetData();
         -- 恐惧项链
-        if (player:HasCollectible(ItemID.pNeck)) then
+        if (player:HasCollectible(ItemID.pn_item)) then
             if data.pn_bool == 0 and data.pn_ed == 0 then
                 player.MoveSpeed = player.MoveSpeed + 0.5
                 data.pn_ed = 1
             end
-            data.pn_timer = 300
+            data.pn_timer = pn_duration
         end
         -- 混乱之脑
-        if (player:HasCollectible(ItemID.brain)) then
-            if data.br_bool == 1 and math.random() * 100 <= 20 then
-                player:SetMinDamageCooldown(60)
-                data.br_timer = 300
+        if (player:HasCollectible(ItemID.br_item)) then
+            local br_rng = player:GetCollectibleRNG(ItemID.br_item)
+            local luck = player.Luck
+            if luck > 5 then
+                luck = 5
+            elseif luck < -2 then
+                luck = -2
+            end
+            if data.br_bool == 1 and br_rng:RandomFloat() < br_chance + luck / 100 then
+                player:SetMinDamageCooldown(br_damageCooldown)
+                data.br_timer = br_cd
                 player:SetColor(Color(0.5, 0.5, 0.0, 1.0, 0.5, 0.5, 0.0), 30, 0, true, false)
+                dsource.Entity:AddConfusion(EntityRef(player), br_duration, false)
                 return false
             end
         end
@@ -107,7 +125,7 @@ function TFI:PostPeffectUpdate(player)
         local player = Isaac.GetPlayer(i)
         local data = player:GetData()
         -- 恐惧项链
-        if (player:HasCollectible(ItemID.pNeck)) then
+        if (player:HasCollectible(ItemID.pn_item)) then
             -- 计时器逻辑
             if data.pn_timer > 0 then
                 data.pn_timer = data.pn_timer - 1
@@ -129,7 +147,7 @@ function TFI:PostPeffectUpdate(player)
             data.pn_ed = 0
         end
         -- 混乱之脑
-        if (player:HasCollectible(ItemID.brain)) then
+        if (player:HasCollectible(ItemID.br_item)) then
             -- 计时器逻辑
             if data.br_timer > 0 then
                 data.br_timer = data.br_timer - 1
@@ -149,5 +167,5 @@ end
 
 TFI:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, TFI.PostPlayerInit);
 TFI:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, TFI.OnEssentialBalmAdd);
-TFI:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, TFI.OnEntityGetDamage);
+TFI:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, TFI.OnEntityTakeDamage);
 TFI:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, TFI.PostPeffectUpdate);
