@@ -243,6 +243,10 @@
         "WispSubType",
         "XMLData",
         "XMLNode",
-        "REPENTOGON"
+        "REPENTOGON",
+        "CuerLib"
+    ],
+    "diagnostics.disable": [
+        "undefined-global"
     ]
 }

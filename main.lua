@@ -1,171 +1,62 @@
-local TFI = RegisterMod("Terraria for Issac", 1)
-local game = Game()
--- 恐惧项链持续时间
-local pn_duration = 300
--- 混乱之脑概率
-local br_chance = 0.2
--- 混乱之脑cd
-local br_cd = 300
--- 混乱之脑无敌时间
-local br_damageCooldown = 60
--- 混乱之脑持续时间
-local br_duration = 120
-------------------------------------------------------------------------------------------------------------------------------------------------------
--- 从xml中获取道具数据
-local ItemID = {
-    pn_item = Isaac.GetItemIdByName("Panic Necklace"),
-    br_item = Isaac.GetItemIdByName("Brain of Confusion")
-};
-------------------------------------------------------------------------------------------------------------------------------------------------------
--- EID
-local ItemEID = {};
-local function EIDAddItem(id, content) -- EID添加内容
-    if id then ItemEID[id] = content; end
+TFI = RegisterMod("Terraria for Issac", 1)
+local Mod = TFI
+Mod.Fonts = include("scripts/fonts")
+Mod.Version = "0.0.0"
+Mod.Language = Options.Language
+Mod.NameStr = "试试泰拉瑞亚！"
+if Mod.Language ~= "zh" then
+    Mod.Language = "en"
+    Mod.NameStr = Mod.Name
 end
 
-EIDAddItem(ItemID.pn_item, {
-    Name = "恐惧项链",
-    Descriptions = "受击后五秒内↑{{Speed}}+0.5移速"
-});
-EIDAddItem(ItemID.br_item, {
-    Name = "混乱之脑",
-    Descriptions = "懒得写介绍"
-});
+--检查前置mod
+local Check = include("scripts/helpers/check")
+if not Check then
+    return
+end
 
-if EID then -- 判断玩家是否订阅了EID
-    local language = "zh_cn";
-    local descriptions = EID.descriptions[language]
-    for id, item in pairs(ItemEID) do
-        EID:addCollectible(id, item.Descriptions, item.Name, language)
-        -- 美德书适配
-        if (item.BookOfVirtues and descriptions.bookOfVirtuesWisps) then
-            descriptions.bookOfVirtuesWisps[id] = item.BookOfVirtues
-        end
-        -- 大胃王适配
-        if (item.BingeEater and descriptions.bingeEaterBuffs) then
-            descriptions.bingeEaterBuffs[id] = item.BingeEater
+CuerLib:InitMod(Mod, "Terraria_for_Issac")
+
+Mod.IDTable = include("scripts/item_id_table")
+
+local Comps = Mod.CuerLibAddon.ModComponents
+function ModItem(name, dataName)
+    for key, value in pairs(Mod.IDTable.ZhCollectiblesName) do
+        if value == name and Isaac.GetItemIdByName(name) == -1 then
+            name = key
+            break
         end
     end
-end
-------------------------------------------------------------------------------------------------------------------------------------------------------
--- 玩家注册函数
-function TFI:PostPlayerInit(player)
-    local numPlayers = game:GetNumPlayers()
-    for i = 0, numPlayers do
-        local player = Isaac.GetPlayer(i)
-        local data = player:GetData()
-        -- 恐惧项链计时器
-        data.pn_timer = 0
-        -- 恐惧项链开关
-        data.pn_bool = 0
-        -- 恐惧项链是否已经触发
-        data.pn_ed = 0
-        -- 混乱之脑计时器
-        data.br_timer = 0
-        -- 混乱之脑开关
-        data.br_bool = 0
-    end
+    return Comps.ModItem:New(name, dataName);
 end
 
--- 道具函数
-function TFI:OnEssentialBalmAdd(player, cacheflag)
-    -- 玩家拥有当前道具的数量
-    local itemCount = player:GetCollectibleNum(ItemID.pn_item)
-    -- 如果玩家持有了该道具
-    --[[if player:HasCollectible(ItemID.pn_item) then
-        -- 判断以撒中角色数值的道具堆栈标签
-        if cacheflag == CacheFlag.CACHE_DAMAGE then        -- 攻击力堆栈
-            player.Damage = player.Damage + 1 * itemCount;
-        elseif cacheflag == CacheFlag.CACHE_SHOTSPEED then -- 弹速堆栈
-            player.ShotSpeed = player.ShotSpeed - 0.2 * itemCount;
-        elseif cacheflag == CacheFlag.CACHE_TEARCOLOR then -- 眼泪颜色
-            player.TearColor = Color(0.2, 1.0, 0.2, 1.0);
-        end
-    end]]
-end
+function ModTrinket(name, dataName) return Comps.ModTrinket:New(name, dataName); end
 
--- 受击函数
-function TFI:OnEntityTakeDamage(player, damount, dflag, dsource, dcountdown)
-    local numPlayers = game:GetNumPlayers()
-    for i = 0, numPlayers do
-        local player = Isaac.GetPlayer(i)
-        local data = player:GetData();
-        -- 恐惧项链
-        if (player:HasCollectible(ItemID.pn_item)) then
-            if data.pn_bool == 0 and data.pn_ed == 0 then
-                player.MoveSpeed = player.MoveSpeed + 0.5
-                data.pn_ed = 1
-            end
-            data.pn_timer = pn_duration
-        end
-        -- 混乱之脑
-        if (player:HasCollectible(ItemID.br_item)) then
-            local br_rng = player:GetCollectibleRNG(ItemID.br_item)
-            local luck = player.Luck
-            if luck > 5 then
-                luck = 5
-            elseif luck < -2 then
-                luck = -2
-            end
-            if data.br_bool == 1 and br_rng:RandomFloat() < br_chance + luck / 100 then
-                player:SetMinDamageCooldown(br_damageCooldown)
-                data.br_timer = br_cd
-                player:SetColor(Color(0.5, 0.5, 0.0, 1.0, 0.5, 0.5, 0.0), 30, 0, true, false)
-                dsource.Entity:AddConfusion(EntityRef(player), br_duration, false)
-                return false
-            end
+function ModPlayer(name, tainted, dataName) return Comps.ModPlayer:New(name, tainted, dataName); end
+
+function ModCard(name, dataName)
+    for key, value in pairs(Mod.IDTable.ZhCardsName) do
+        if value == name and Isaac.GetCardIdByName(name) == -1 then
+            name = key
+            break
         end
     end
+    return Comps.ModCard:New(name, dataName)
 end
 
---玩家持有道具帧函数
-function TFI:PostPeffectUpdate(player)
-    local numPlayers = game:GetNumPlayers()
-    for i = 0, numPlayers do
-        local player = Isaac.GetPlayer(i)
-        local data = player:GetData()
-        -- 恐惧项链
-        if (player:HasCollectible(ItemID.pn_item)) then
-            -- 计时器逻辑
-            if data.pn_timer > 0 then
-                data.pn_timer = data.pn_timer - 1
-                if data.pn_timer > 0 then
-                    data.pn_bool = 1
-                else
-                    data.pn_bool = 0
-                end
-            else
-                data.pn_bool = 0
-            end
-            -- 效果实现
-            if data.pn_bool == 0 and data.pn_ed == 1 then
-                player.MoveSpeed = player.MoveSpeed - 0.5
-                data.pn_ed = 0
-            end
-        else
-            data.pn_bool = 0
-            data.pn_ed = 0
-        end
-        -- 混乱之脑
-        if (player:HasCollectible(ItemID.br_item)) then
-            -- 计时器逻辑
-            if data.br_timer > 0 then
-                data.br_timer = data.br_timer - 1
-                if data.br_timer > 0 then
-                    data.br_bool = 0
-                else
-                    data.br_bool = 1
-                end
-            else
-                data.br_bool = 1
-            end
-        else
-            data.br_bool = 0
-        end
-    end
+function ModPill(name, dataName) return Comps.ModPill:New(name, dataName); end
+
+function ModChallenge(name, dataName) return Comps.ModChallenge:New(name, dataName); end
+
+function ModPart(name, dataName) return Comps.ModPart:New(name, dataName); end
+
+TFI.Game = Game()
+include("scripts/contents")
+
+if Options.Language == 'zh' then
+    Mod.ZHInfo = include("translations/zh")
 end
 
-TFI:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, TFI.PostPlayerInit);
-TFI:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, TFI.OnEssentialBalmAdd);
-TFI:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, TFI.OnEntityTakeDamage);
-TFI:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, TFI.PostPeffectUpdate);
+if EID then
+    include("translations/main")
+end
