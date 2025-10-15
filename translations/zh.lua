@@ -7,17 +7,17 @@ local Translation = {}
 Translation.Collectibles = {
     [Collectibles.PanicNecklace.ID] = {
         Name = "恐惧项链",
-        Description = '谁在害怕谁？',
+        Description = '骇死我力',
     },
     [Collectibles.BrainOfConfusion.ID] = {
         Name = "混乱之脑",
         Description = '晕乎乎',
-    }，
-    [Collectibles.lucky coin.ID] = {
+    },
+    [Collectibles.LuckyCoin.ID] = {
         Name = "幸运硬币",
         Description = '好运常伴',
     },
-    [Collectibles.Moonshell.ID] = {
+    [Collectibles.MoonShell.ID] = {
         Name = "月亮贝壳",
         Description = '月光的庇护',
     },
@@ -25,7 +25,6 @@ Translation.Collectibles = {
         Name = "孢子囊",
         Description = '它们在你周围滋生...',
     },
-
     [Collectibles.TelsonNecklace.ID] = {
         Name = "毒刺项链",
         Description = '丛林之击',
@@ -38,10 +37,14 @@ Translation.Collectibles = {
         Name = "冰冻壳",
         Description = '冻结敌人',
     },
+    [Collectibles.PillarOfUnity.ID] = {
+        Name = "归一心原石",
+        Description = '无尽力量',
+    },
     [Collectibles.PigDragonBallon.ID] = {
         Name = "猪龙气球",
         Description = '向着天空...和大海',
-    }
+    },
 }
 
 Translation.Players = {

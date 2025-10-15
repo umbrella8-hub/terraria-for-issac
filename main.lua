@@ -60,3 +60,12 @@ end
 if EID then
     include("translations/main")
 end
+
+include("scripts/TFI_options_data")
+require("scripts/TFI_options")
+
+if Mod.Language == "zh" then
+    print("[试试泰拉瑞亚！] 已加载 (v" .. (Mod.Version) .. ")")
+else
+    print("[TFI] Terraria for Issac " .. (Mod.Version) .. " Loaded.")
+end
