@@ -1,5 +1,12 @@
 <items gfxroot="gfx/items/" version="1">
   <passive name="Panic Necklace" cache="damage" description="A item for test" gfx="p_panic_necklace.png" quality="1" tags="offensive"/>
-  <passive name="Brain of Confusion" cache="damage" description="A item for test" gfx="p_brain_of_confusion.png" quality="1" tags="offensive"/>
-  <passive name="lucky coin" cache="damage" description="A item for test" gfx="p_brain_of_confusion.png" quality="1" tags="offensive"/>
+  <passive name="Brain of Confusion" cache="damage" description="A item for test" gfx="p_brain_of_confusion.png" quality="2" tags="offensive"/>
+  <passive name="Lucky Coin" cache="damage" description="A item for test" gfx="p_lucky_coin.png" quality="2" tags="offensive"/>
+  <passive name="Moon Shell" cache="damage" description="A item for test" gfx="p_moon_shell.png" quality="2" tags="offensive"/>
+  <passive name="Spore Sac" cache="damage" description="A item for test" gfx="p_spore_sac.png" quality="3" tags="offensive"/>
+  <passive name="Telson Necklace" cache="damage" description="A item for test" gfx="p_telson_necklace.png" quality="2" tags="offensive"/>
+  <passive name="Bone Helmet" cache="damage" description="A item for test" gfx="p_bone_helmet.png" quality="3" tags="offensive"/>
+  <passive name="Frozen Shell" cache="damage" description="A item for test" gfx="p_frozen_shell.png" quality="2" tags="nolostbr"/>
+  <passive name="Pillar of Unity" cache="damage" description="A item for test" gfx="p_pillar_of_unity.png" quality="3" tags="offensive"/>
+  <passive name="Pig Dragon Balloon" cache="damage" description="A item for test" gfx="p_pig_dragon_ballon.png" quality="2" tags="offensive"/>
 </items>
