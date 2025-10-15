@@ -12,6 +12,35 @@ Translation.Collectibles = {
     [Collectibles.BrainOfConfusion.ID] = {
         Name = "混乱之脑",
         Description = '晕乎乎',
+    }，
+    [Collectibles.lucky coin.ID] = {
+        Name = "幸运硬币",
+        Description = '好运常伴',
+    },
+    [Collectibles.Moonshell.ID] = {
+        Name = "月亮贝壳",
+        Description = '月光的庇护',
+    },
+    [Collectibles.SporeSac.ID] = {
+        Name = "孢子囊",
+        Description = '它们在你周围滋生...',
+    },
+
+    [Collectibles.TelsonNecklace.ID] = {
+        Name = "毒刺项链",
+        Description = '丛林之击',
+    },
+    [Collectibles.BoneHelmet.ID] = {
+        Name = "骨盔",
+        Description = '黑暗中的守护...',
+    },
+    [Collectibles.FrozenShell.ID] = {
+        Name = "冰冻壳",
+        Description = '冻结敌人',
+    },
+    [Collectibles.PigDragonBallon.ID] = {
+        Name = "猪龙气球",
+        Description = '向着天空...和大海',
     }
 }
 
