@@ -20,7 +20,9 @@ function BrainOfConfusion:EntityTakeDamage(entity, amount, flags, source, time)
     if rng:RandomInt(100) <= br_chance + luck * 1.5 then
         player:SetMinDamageCooldown(br_damageCooldown)
         player:SetColor(Color(0.5, 0.5, 0.0, 1.0, 0.5, 0.5, 0.0), 30, 0, true, false)
-        source.Entity:AddConfusion(EntityRef(player), br_duration, false)
+        if not (flags & DamageFlag.DAMAGE_NO_PENALTIES > 0 or flags & DamageFlag.DAMAGE_RED_HEARTS > 0) then
+            source.Entity:AddConfusion(EntityRef(player), br_duration, false)
+        end
         return false
     end
 end

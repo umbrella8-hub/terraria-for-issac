@@ -15,7 +15,7 @@ Translation.Collectibles = {
     },
     [Collectibles.LuckyCoin.ID] = {
         Name = "幸运硬币",
-        Description = '好运常伴',
+        Description = '通货膨胀',
     },
     [Collectibles.MoonShell.ID] = {
         Name = "月亮贝壳",

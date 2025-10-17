@@ -27,7 +27,7 @@ function ModItem(name, dataName)
             break
         end
     end
-    return Comps.ModItem:New(name, dataName);
+    return Comps.ModItem:New(name, dataName)
 end
 
 function ModTrinket(name, dataName) return Comps.ModTrinket:New(name, dataName); end
@@ -49,6 +49,8 @@ function ModPill(name, dataName) return Comps.ModPill:New(name, dataName); end
 function ModChallenge(name, dataName) return Comps.ModChallenge:New(name, dataName); end
 
 function ModPart(name, dataName) return Comps.ModPart:New(name, dataName); end
+
+function ModEntity(name, dataName) return Comps.ModEntity:New(name, dataName); end
 
 TFI.Game = Game()
 include("scripts/contents")

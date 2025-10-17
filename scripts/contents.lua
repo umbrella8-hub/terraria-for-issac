@@ -12,3 +12,6 @@ Mod.Collectibles = {
     PillarOfUnity = include("scripts/items/pillar_of_unity"),       -- 9
     PigDragonBallon = include("scripts/items/pig_dragon_ballon"),   -- 10
 }
+Mod.Effects = {
+    Spore = include("scripts/effects/spore"),
+}

@@ -13,12 +13,13 @@ EIDInfo.Collectibles = {
     },
     [Collectibles.BrainOfConfusion.ID] = {
         name = "混乱之脑",
-        info = "20%概率闪避伤害并对攻击者施加混乱" ..
+        info = "20%概率闪避所有类型伤害并对攻击者施加混乱" ..
             "#{{Luck}} 幸运20:50%概率"
     },
     [Collectibles.LuckyCoin.ID] = {
         name = "幸运硬币",
-        info = '',
+        info = '10%概率使硬币生成时增加一个等级' ..
+            "#{{Luck}} 幸运30:100%概率"
     },
     [Collectibles.MoonShell.ID] = {
         name = "月亮贝壳",
